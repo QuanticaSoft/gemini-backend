@@ -6,7 +6,7 @@ interface Options {
     systemInstruction?: string;
 }
 
-export const basicPromptUseCase = async (
+export const basicPromptStreamUseCase = async (
     ai: GoogleGenAI, 
     basicPromptDto: BasicPromptDto,
     options?: Options,
@@ -15,6 +15,7 @@ export const basicPromptUseCase = async (
     const { 
         //model = 'gemini-2.0-flash', 
         model = 'gemini-3-flash-preview',
+        //las instrucciones que va a gobernar la respuesta del modelo
         systemInstruction = `
             Responde unicamente en espanol
             En formato markdown
@@ -23,15 +24,15 @@ export const basicPromptUseCase = async (
         `,
      } = options ?? {};
 
-    const response = await ai.models.generateContent({
+    const response = await ai.models.generateContentStream({
        model: model,
        contents: basicPromptDto.prompt,
        config:{
         systemInstruction: systemInstruction,
        }
     });
-    console.log(response.text);
+    //console.log(response.text);
 
     // Implementation for basic prompt functionality
-    return response.text;
+    return response;
 }
